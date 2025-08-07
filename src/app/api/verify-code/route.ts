@@ -35,7 +35,7 @@ export async function POST(request: Request) {
         {
           success: false,
           message:
-            "verification code has expired, please signup again to get a new code",
+            "verification code has expired, please sign up again to get a new code",
         },
         { status: 400 }
       );
