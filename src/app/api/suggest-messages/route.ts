@@ -1,7 +1,6 @@
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
 import { streamText } from 'ai';
 
-
 export const runtime = 'edge';
 
 const google = createGoogleGenerativeAI({
@@ -20,7 +19,7 @@ export async function POST() {
       prompt: prompt,
     });
 
-     return result.toTextStreamResponse()
+     return result.toUIMessageStreamResponse();
   } catch (error) {
     console.error('Error in message suggestion route:', error);
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
