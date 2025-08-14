@@ -14,3 +14,7 @@ export const signUpSchema =  z.object({
     // Corrected line: message passed as the second argument
     password: z.string().min(6, "password must be at least 6 characters") 
 });
+
+export const verifyUsernameSchema = z.object({
+  username: usernameValidation
+});

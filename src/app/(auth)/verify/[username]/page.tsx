@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
+import SpotlightCard from "@/components/SpotlightCard";
+import Squares from "@/components/SquaresBg";
 
 const VerifyAccount = () => {
   const router = useRouter();
@@ -37,11 +39,22 @@ const VerifyAccount = () => {
     }
   };
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-        <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md">
+    <div className="flex justify-center relative items-center min-h-screen bg-[rgb(10,10,10)]">
+       <Squares
+        speed={0.2}
+        squareSize={40}
+        direction="diagonal" // up, down, left, right, diagonal
+        borderColor="#fafafa33"
+        hoverFillColor="#fff"
+      />
+        <div className="w-full max-w-lg p-8 space-y-8 relative z-10 text-white rounded-lg shadow-md">
+          <SpotlightCard
+          className="custom-spotlight-card"
+          spotlightColor="rgba(0, 229, 255, 0.2)"
+        >
             <div className="text-center">
-                <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-6">Verify Your Account</h1>
-                <p className="mb-4">Enter the verification code sent to your email</p>
+                <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl mb-4">Verify Your Account</h1>
+                <p className="mb-8">Enter the verification code sent to your email</p>
             </div>
              <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -61,9 +74,10 @@ const VerifyAccount = () => {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit" className="text-white border-1 hover:bg-white/20" variant="ghost">Submit</Button>
       </form>
     </Form>
+        </SpotlightCard>
         </div>
     </div>
   );

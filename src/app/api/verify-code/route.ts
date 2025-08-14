@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       return Response.json(
         {
           success: false,
-          message: "Incorect code",
+          message: "Incorrect code",
         },
         { status: 400 }
       );

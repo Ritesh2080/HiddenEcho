@@ -1,61 +1,79 @@
-'use client';
-import { Mail } from 'lucide-react'; // Assuming you have an icon for messages
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import Autoplay from 'embla-carousel-autoplay';
-import messages from '@/messages.json';
+"use client";
 
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from '@/components/ui/carousel';
+import TextType from "@/components/TypeText";
+import Carousel from "@/components/Caraousel";
+import ScrambledText from "@/components/ScrambleTest";
+import Galaxy from "@/components/Galaxy";
 
 export default function Home() {
   return (
     <>
       {/* Main content */}
-      <main className="flex-grow flex flex-col items-center justify-center px-4 md:px-24 py-12 bg-gray-800 text-white">
-        <section className="text-center mb-8 md:mb-12">
+      <main className="flex-grow flex flex-col relative items-center justify-center px-4 md:px-24 py-12 bg-black text-white">
+        {/* <div
+          style={{
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            top: "0",
+            zIndex: "0",
+          }}
+        >
+          <Particles
+            particleColors={["#ffffff", "#ffffff"]}
+            particleCount={200}
+            particleSpread={10}
+            speed={0.1}
+            particleBaseSize={100}
+            moveParticlesOnHover={true}
+            alphaParticles={false}
+            disableRotation={false}
+          />
+        </div> */}
+        <div   style={{
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            top: "0",
+            zIndex: "0",
+          }}>
+  <Galaxy  glowIntensity={0.4}
+    saturation={1} density={0.3} starSpeed={0.2} />
+</div>
+        <section className="text-center mb-8 md:mb-12 relative z-10 pointer-events-none">
           <h1 className="text-3xl md:text-5xl font-bold">
-            Dive into the World of Anonymous Feedback
+            <TextType
+              text={["Dive into the World of Anonymous Feedback"]}
+              typingSpeed={75}
+              pauseDuration={1500}
+              showCursor={true}
+              cursorCharacter="|"
+            />
           </h1>
-          <p className="mt-3 md:mt-4 text-base md:text-lg">
-            HiddenEcho - Where your identity remains a secret.
-          </p>
+            <ScrambledText
+            className="mt-3 md:mt-6 text-base md:text-2xl pointer-events-auto"
+  radius={100}
+  duration={1.2}
+  speed={0.5}
+  scrambleChars={".:"} >
+HiddenEcho - Where your identity remains a secret
+</ScrambledText>
+          
         </section>
 
         {/* Carousel for Messages */}
-        <Carousel
-          plugins={[Autoplay({ delay: 2000 })]}
-          className="w-full max-w-lg md:max-w-xl"
-        >
-          <CarouselContent>
-            {messages.map((message, index) => (
-              <CarouselItem key={index} className="p-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>{message.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex flex-col md:flex-row items-start space-y-2 md:space-y-0 md:space-x-4">
-                    <Mail className="flex-shrink-0" />
-                    <div>
-                      <p>{message.content}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {message.received}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-        </Carousel>
-      </main>
 
-      {/* Footer */}
-      <footer className="text-center p-4 md:p-6 bg-gray-900 text-white">
-        © 2025 HiddenEcho. All rights reserved.
-      </footer>
+        <div style={{ height: "100%", position: "relative" }}>
+          <Carousel
+            baseWidth={500}
+            autoplay={true}
+            autoplayDelay={1500}
+            pauseOnHover={true}
+            loop={true}
+            round={false}
+          />
+        </div>
+      </main>
     </>
   );
 }

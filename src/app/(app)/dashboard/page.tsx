@@ -10,13 +10,15 @@ import { ApiResponse } from "@/types/ApiResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2, RefreshCcw } from "lucide-react";
-import { User } from "next-auth";
 import { useSession } from "next-auth/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { acceptMessageSchema } from "@/schemas/acceptMessageSchema";
-
+import { useRouter } from "next/navigation";
+import Squares from "@/components/SquaresBg";
+import SpotlightCard from "@/components/SpotlightCard";
 function UserDashboard() {
+  const router = useRouter()
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSwitchLoading, setIsSwitchLoading] = useState(false);
@@ -25,7 +27,7 @@ function UserDashboard() {
     setMessages(messages.filter((message) => message._id !== messageId));
   };
 
-  const { data: session } = useSession();
+  const { data: session} = useSession();
 
   const form = useForm({
     resolver: zodResolver(acceptMessageSchema),
@@ -74,12 +76,15 @@ function UserDashboard() {
 
   // Fetch initial state from the server
   useEffect(() => {
-    if (!session || !session.user) return;
+    if (!session || !session.user){
+      router.replace("/")
+      return;
+    };
 
     fetchMessages();
 
     fetchAcceptMessages();
-  }, [session, setValue, fetchAcceptMessages, fetchMessages]);
+  }, [router,session, setValue, fetchAcceptMessages, fetchMessages]);
 
   // Handle switch change
   const handleSwitchChange = async () => {
@@ -97,11 +102,7 @@ function UserDashboard() {
     }
   };
 
-  if (!session || !session.user) {
-    return <div></div>;
-  }
-
-  const { username } = session.user as User;
+  const username = session?.user?.username ?? "";
 
   const baseUrl = `${window.location.protocol}//${window.location.host}`;
   const profileUrl = `${baseUrl}/u/${username}`;
@@ -112,19 +113,32 @@ function UserDashboard() {
   };
 
   return (
-    <div className="my-8 mx-4 md:mx-8 lg:mx-auto p-6 bg-white rounded w-full max-w-6xl">
+     <div className="flex justify-center w-full relative items-center min-h-screen bg-[rgb(10,10,10)]">
+       <Squares
+        speed={0.2}
+        squareSize={50}
+        direction="diagonal" // up, down, left, right, diagonal
+        borderColor="#fafafa33"
+        hoverFillColor="#fff"
+      />
+          <div className="w-[90%] md:w-[80%] h-65% text-white p-8 space-y-8 relative z-10 rounded-lg shadow-md mt-14 mb-14">
+            <SpotlightCard
+          className="custom-spotlight-card w-full"
+          spotlightColor="rgba(0, 229, 255, 0.2)"
+        >
+          <div className="flex flex-col items-start">
       <h1 className="text-4xl font-bold mb-4">User Dashboard</h1>
 
-      <div className="mb-4">
+      <div className="mb-4 w-full">
         <h2 className="text-lg font-semibold mb-2">Copy Your Unique Link</h2>{" "}
-        <div className="flex items-center">
+        <div className="flex gap-2 flex-col md:flex-row items-center">
           <input
             type="text"
             value={profileUrl}
             disabled
-            className="input input-bordered w-full p-2 mr-2"
+            className="w-full md:w-[50%] text-xs md:text-base p-2 !border-1 !border-white !rounded-md !text-white"
           />
-          <Button onClick={copyToClipboard}>Copy</Button>
+          <Button variant='ghost' className="text-white w-full md:w-auto border-1 hover:bg-white/20 p-5" onClick={copyToClipboard}>Copy</Button>
         </div>
       </div>
 
@@ -134,10 +148,12 @@ function UserDashboard() {
           checked={acceptMessages}
           onCheckedChange={handleSwitchChange}
           disabled={isSwitchLoading}
+          className="dark:data-[state=checked]:bg-white dark:data-[state=unchecked]:bg-gray-600"
         />
         <span className="ml-2">
           Accept Messages: {acceptMessages ? "On" : "Off"}
         </span>
+      </div>
       </div>
       <Separator />
 
@@ -167,6 +183,8 @@ function UserDashboard() {
         ) : (
           <p>No messages to display.</p>
         )}
+      </div>
+      </SpotlightCard>
       </div>
     </div>
   );

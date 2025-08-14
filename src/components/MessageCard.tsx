@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
-import axios, { AxiosError } from 'axios';
-import { X } from 'lucide-react';
-import { Message } from '@/model/User';
-import dayjs from 'dayjs';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import axios, { AxiosError } from "axios";
+import { X } from "lucide-react";
+import { Message } from "@/model/User";
+import dayjs from "dayjs";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,10 +15,11 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Button } from './ui/button';
+} from "@/components/ui/alert-dialog";
+import { Button } from "./ui/button";
 import { toast } from "sonner";
-import { ApiResponse } from '@/types/ApiResponse';
+import { ApiResponse } from "@/types/ApiResponse";
+import SpotlightCard from "./SpotlightCard";
 
 type MessageCardProps = {
   message: Message;
@@ -31,13 +32,12 @@ export function MessageCard({ message, onMessageDelete }: MessageCardProps) {
       const response = await axios.delete<ApiResponse>(
         `/api/delete-message/${message._id}`
       );
-      toast.success(response.data.message)
+      toast.success(response.data.message);
       onMessageDelete(message?._id);
-
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
-      toast.error(axiosError.message)
-    } 
+      toast.error(axiosError.message);
+    }
   };
 
   return (
@@ -45,33 +45,43 @@ export function MessageCard({ message, onMessageDelete }: MessageCardProps) {
       <CardHeader>
         <div className="flex justify-between items-center">
           <CardTitle>{message.content}</CardTitle>
+
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant='destructive'>
+              <Button variant="destructive">
                 <X className="w-5 h-5" />
               </Button>
             </AlertDialogTrigger>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                <AlertDialogDescription>
-                  This action cannot be undone. This will permanently delete
-                  this message.
-                </AlertDialogDescription>
-              </AlertDialogHeader>
-              <AlertDialogFooter>
-                <AlertDialogCancel>
-                  Cancel
-                </AlertDialogCancel>
-                <AlertDialogAction onClick={handleDeleteConfirm}>
-                  Continue
-                </AlertDialogAction>
-              </AlertDialogFooter>
+
+            <AlertDialogContent className="p-0 rounded-3xl">
+              <SpotlightCard
+                className="custom-spotlight-card"
+                spotlightColor="rgba(0, 229, 255, 0.2)"
+              >
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogDescription className="mb-2">
+                    This action cannot be undone. This will permanently delete
+                    this message.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel className="text-white border-1 bg-transparent hover:bg-white/20">
+                    Cancel
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    className="text-white border-1 bg-transparent hover:bg-white/20"
+                    onClick={handleDeleteConfirm}
+                  >
+                    Continue
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </SpotlightCard>
             </AlertDialogContent>
           </AlertDialog>
         </div>
         <div className="text-sm">
-           {dayjs(message.createdAt).format('MMM D, YYYY h:mm A')}
+          {dayjs(message.createdAt).format("MMM D, YYYY h:mm A")}
         </div>
       </CardHeader>
       <CardContent></CardContent>
