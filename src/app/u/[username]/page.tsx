@@ -48,6 +48,15 @@ const Page = () => {
       );
     }
   };
+  const handleGetSuggestions = async () => {
+    try {
+      await complete("");
+    } catch (err) {
+      console.error("Gemini suggestion error:", err);
+      toast.error("Failed to fetch suggestions");
+    }
+  };
+
   return (
     <div className="flex justify-center w-full relative items-center min-h-screen bg-[rgb(10,10,10)]">
       <Squares
@@ -109,7 +118,7 @@ const Page = () => {
               type="button"
               variant="ghost"
               className="text-white w-full md:w-auto  border-1 hover:bg-white/20 p-5"
-              onClick={() => complete("")}
+              onClick={handleGetSuggestions}
               disabled={isLoading}
             >
               {isLoading ? "Generating..." : "Generate Suggestions"}

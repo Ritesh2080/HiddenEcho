@@ -1,5 +1,5 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import { AuthOptions } from "next-auth";
+import { AuthOptions, User } from "next-auth";
 import bcrypt from "bcryptjs";
 import dbconnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
@@ -12,7 +12,7 @@ export const authOptions: AuthOptions = {
         identifier: { label: "Username or Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials: any): Promise<any> {
+      async authorize(credentials): Promise<User | null> {
         
         if (!credentials?.identifier || !credentials?.password) {
           throw new Error("Please enter both identifier and password.");
@@ -38,7 +38,7 @@ export const authOptions: AuthOptions = {
         }
 
         const returnUser = {
-          id: user._id.toString(),
+          id: user._id!.toString(),
           email: user.email,
           username: user.username,
           isVerified: user.isVerified,
@@ -61,7 +61,6 @@ export const authOptions: AuthOptions = {
     async jwt({ token, user }) {
       
       if (user) {
-        token.id = user.id;
         token._id = user.id;
         token.isVerified = user.isVerified;
         token.isAcceptingMessages = user.isAcceptingMessages;
@@ -74,7 +73,6 @@ export const authOptions: AuthOptions = {
     async session({ session, token }) {  
       if (token && session.user) {
         session.user._id = token._id;
-        session.user.id = token.id;
         session.user.isVerified = token.isVerified;
         session.user.isAcceptingMessages = token.isAcceptingMessages;
         session.user.username = token.username;
@@ -82,7 +80,4 @@ export const authOptions: AuthOptions = {
       return session;
     },
   },
-
-  debug: true, // Enable debug mode
-  secret: process.env.NEXTAUTH_SECRET,
 };
