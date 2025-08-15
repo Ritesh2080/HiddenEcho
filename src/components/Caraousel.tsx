@@ -170,11 +170,11 @@ export default function Carousel({
       className={`relative overflow-hidden p-4 ${
         round
           ? "rounded-full border border-white"
-          : "rounded-[24px] border border-[#222]"
+          : "rounded-[24px] border border-white"
       }`}
       style={{
         width: `${baseWidth}px`,
-        ...(round && { height: `${baseWidth}px` }),
+        ...(round && { height: `300px` }),
       }}
     >
       <motion.div
@@ -207,23 +207,23 @@ export default function Carousel({
               className={`relative shrink-0 flex flex-col ${
                 round
                   ? "items-center justify-center text-center bg-[#060010] border-0"
-                  : "items-start justify-between bg-[#222] border border-[#222] rounded-[12px]"
+                  : "justify-center items-center gap-3 bg-white/10 border border-white rounded-[12px]"
               } overflow-hidden cursor-grab active:cursor-grabbing`}
               style={{
                 width: itemWidth,
-                height: round ? itemWidth : "100%",
+                height: "200px",
                 rotateY: rotateY,
                 ...(round && { borderRadius: "50%" }),
               }}
               transition={effectiveTransition}
             >
-              <div className={`${round ? "p-0 m-0" : "mb-4 p-5"}`}>
-                <span className="flex h-[28px] w-[28px] items-center justify-center rounded-full bg-[#060010]">
+              <div className={`${round ? "p-0 m-0" : ""}`}>
+                <span className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-transparent">
                   {item.icon}
                 </span>
               </div>
-              <div className="p-5">
-                <div className="mb-1 font-black text-lg text-white">
+              <div className="p-2 flex flex-col justify-center items-center">
+                <div className=" font-black text-lg text-white">
                   {item.title}
                 </div>
                 <p className="text-sm text-white">{item.description}</p>
@@ -245,10 +245,10 @@ export default function Carousel({
                 currentIndex % items.length === index
                   ? round
                     ? "bg-white"
-                    : "bg-[#333333]"
+                    : "bg-white"
                   : round
                     ? "bg-[#555]"
-                    : "bg-[rgba(51,51,51,0.4)]"
+                    : "bg-[#555]"
               }`}
               animate={{
                 scale: currentIndex % items.length === index ? 1.2 : 1,

@@ -5,6 +5,7 @@ import { Oxanium } from "next/font/google"
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Toaster } from "sonner";
+import MovingLogo from "@/components/MovingLogo";
 
 const oxanium = Oxanium({
   subsets: ["latin"],
@@ -34,6 +35,7 @@ export default function RootLayout({
         <body  className={oxanium.className}>
           <Toaster expand={false} />
           <Navbar/>
+          <MovingLogo/>
           {children}
           <Footer/>
         </body>

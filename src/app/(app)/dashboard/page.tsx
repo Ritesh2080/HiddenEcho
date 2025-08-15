@@ -22,12 +22,12 @@ function UserDashboard() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isSwitchLoading, setIsSwitchLoading] = useState(false);
+  const [profileUrl, setProfileUrl] = useState("");
+  const { data: session, status } = useSession();
 
   const handleDeleteMessage = (messageId: string) => {
     setMessages(messages.filter((message) => message._id !== messageId));
   };
-
-  const { data: session} = useSession();
 
   const form = useForm({
     resolver: zodResolver(acceptMessageSchema),
@@ -76,15 +76,25 @@ function UserDashboard() {
 
   // Fetch initial state from the server
   useEffect(() => {
-    if (!session || !session.user){
-      router.replace("/")
-      return;
-    };
+    if (status === "unauthenticated") {
+    router.replace("/");
+  }
 
     fetchMessages();
 
     fetchAcceptMessages();
-  }, [router,session, setValue, fetchAcceptMessages, fetchMessages]);
+  }, [router,session,status, fetchAcceptMessages, fetchMessages]);
+
+  useEffect(() => {
+  if (typeof window !== "undefined" && session?.user?.username) {
+    const baseUrl = `${window.location.protocol}//${window.location.host}`;
+    setProfileUrl(`${baseUrl}/u/${session.user.username}`);
+  }
+}, [session?.user?.username]);
+
+useEffect(() => {
+ 
+}, [status, router]);
 
   // Handle switch change
   const handleSwitchChange = async () => {
@@ -102,11 +112,6 @@ function UserDashboard() {
     }
   };
 
-  const username = session?.user?.username ?? "";
-
-  const baseUrl = `${window.location.protocol}//${window.location.host}`;
-  const profileUrl = `${baseUrl}/u/${username}`;
-
   const copyToClipboard = () => {
     navigator.clipboard.writeText(profileUrl);
     toast.success("Profile URL copied to clipboard");
@@ -120,6 +125,7 @@ function UserDashboard() {
         direction="diagonal" // up, down, left, right, diagonal
         borderColor="#fafafa33"
         hoverFillColor="#fff"
+        IsDashBoard={true}
       />
           <div className="w-[90%] md:w-[80%] h-65% text-white p-8 space-y-8 relative z-10 rounded-lg shadow-md mt-14 mb-14">
             <SpotlightCard

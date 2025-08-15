@@ -13,6 +13,7 @@ interface SquaresProps {
   borderColor?: CanvasStrokeStyle;
   squareSize?: number;
   hoverFillColor?: CanvasStrokeStyle;
+  IsDashBoard?: boolean; // ✅ new prop
 }
 
 const Squares: React.FC<SquaresProps> = ({
@@ -21,6 +22,7 @@ const Squares: React.FC<SquaresProps> = ({
   borderColor = "#999",
   squareSize = 40,
   hoverFillColor = "#222",
+  IsDashBoard = false,
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const requestRef = useRef<number | null>(null);
@@ -163,7 +165,7 @@ const Squares: React.FC<SquaresProps> = ({
   return (
     <canvas
       ref={canvasRef}
-      className="w-full h-full border-none absolute top-0 z-0"
+      className={`${IsDashBoard? "pointer-events-none":""} border-none absolute top-0 z-0 w-full h-full`}
     ></canvas>
   );
 };
