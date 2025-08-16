@@ -31,9 +31,12 @@ import axios, { AxiosError } from "axios";
 import { ApiResponse } from "@/types/ApiResponse";
 import { verifyUsernameSchema } from "@/schemas/signUpSchema";
 import { DialogTitle } from "@radix-ui/react-dialog";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 const Page = () => {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -50,41 +53,44 @@ const Page = () => {
     },
   });
   const { update } = useSession();
- const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-  
-  const result = await signIn("credentials", {
-    identifier: data.identifier,
-    password: data.password,
-    redirect: false,
-  });
-  
-  
-  if (!result?.error) {
-    toast.success("Signed in successfully. Redirecting...");
-    
-    await update();
+  const onSubmit = async (data: z.infer<typeof signInSchema>) => {
+    setIsSubmitting(true);
+    const result = await signIn("credentials", {
+      identifier: data.identifier,
+      password: data.password,
+      redirect: false,
+    });
 
+    if (!result?.error) {
+      setIsSubmitting(false);
+      toast.success("Signed in successfully. Redirecting...");
 
-    router.replace("/dashboard");
-  } else {
-    toast.error(result.error);
-  }
-};
+      await update();
+
+      router.replace("/dashboard");
+    } else {
+      setIsSubmitting(false);
+      toast.error(result.error);
+    }
+  };
   const handleVerifyClick = async (
     data: z.infer<typeof verifyUsernameSchema>
   ) => {
     try {
-
+      setIsSubmitting(true);
       const response = await axios.get(
         `/api/get-user?username=${data.username}`
       );
       if (response.data.success) {
+        setIsSubmitting(false);
         toast.success("redirecting to verification page");
         router.replace(`/verify/${data.username}`);
       } else {
+        setIsSubmitting(false);
         toast.error(response.data.message || "Error getting the username");
       }
     } catch (error) {
+      setIsSubmitting(false);
       const axiosError = error as AxiosError<ApiResponse>;
       toast.error(
         axiosError.response?.data.message || "error getting the username"
@@ -161,21 +167,25 @@ const Page = () => {
                   variant="ghost"
                   className="text-white border-1 hover:bg-white/20"
                 >
-                  Sign In
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    </>
+                  ) : (
+                    "Sign In"
+                  )}
                 </Button>
               </form>
             </Form>
             <div className="text-center mt-4">
               <div className="flex justify-start flex-col md:flex-row items-start md:items-center gap-2 md:gap-12 text-start mb-4">
-                <p>
-                  New User? Head to sign-up page
-                  </p>
-                  <Link
-                    href="/sign-up"
-                    className="text-blue-600 md:ml-4 text-lg hover:underline hover:text-blue-800"
-                  >
-                    Sign Up
-                  </Link>
+                <p>New User? Head to sign-up page</p>
+                <Link
+                  href="/sign-up"
+                  className="text-blue-600 md:ml-4 text-lg hover:underline hover:text-blue-800"
+                >
+                  Sign Up
+                </Link>
               </div>
               <div className="flex justify-center flex-col md:flex-row items-start md:items-center gap-2 md:gap-6 text-start">
                 <p>Already Registered? Verify your account </p>
@@ -229,7 +239,13 @@ const Page = () => {
                               variant="ghost"
                               className="text-white border-1 hover:bg-white/20"
                             >
-                              Verify
+                              {isSubmitting ? (
+                                <>
+                                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                </>
+                              ) : (
+                                "Verify"
+                              )}
                             </Button>
                           </form>
                         </Form>

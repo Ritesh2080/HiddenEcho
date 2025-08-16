@@ -32,7 +32,7 @@ export default function MovingLogo() {
     // This div is now centered on the screen. GSAP will move it from this central point.
     <div
       ref={logoRef}
-      className="fixed z-50 pointer-events-none"
+      className="fixed z-100 pointer-events-none"
     >
       <Image
         src="/logo.png"

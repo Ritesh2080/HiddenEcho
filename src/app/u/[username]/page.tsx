@@ -21,9 +21,12 @@ import * as z from "zod";
 import { useCompletion } from "@ai-sdk/react";
 import Squares from "@/components/SquaresBg";
 import SpotlightCard from "@/components/SpotlightCard";
+import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 const Page = () => {
   const params = useParams<{ username: string }>();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const form = useForm<z.infer<typeof messageSchema>>({
     resolver: zodResolver(messageSchema),
     defaultValues: {
@@ -35,13 +38,23 @@ const Page = () => {
   });
   const submitMessage = async (data: z.infer<typeof messageSchema>) => {
     try {
+      setIsSubmitting(true);
       const response = await axios.post<ApiResponse>("/api/send-message", {
         username: params.username,
         content: data.content,
       });
-      toast.success(response.data.message);
+      if (response.data.success) {
+        setIsSubmitting(false);
+        toast.success(response.data.message);
+        form.reset({ content: "" }, { keepDirty: false, keepTouched: false });
+      } else {
+        setIsSubmitting(false);
+        form.reset({ content: "" }, { keepDirty: false, keepTouched: false });
+        toast.error(response.data.message || "Error during sending");
+      }
     } catch (error) {
       console.error("Error during sending", error);
+      setIsSubmitting(false);
       const axiosError = error as AxiosError<ApiResponse>;
       toast.error(
         axiosError.response?.data.message || "Sending message failed"
@@ -91,7 +104,7 @@ const Page = () => {
                       </FormLabel>
                       <FormControl>
                         <Input
-                          className="h-15 w-full"
+                          className="h-15 w-full placeholder:text-gray-400 focus:placeholder:text-gray-400"
                           placeholder="Write your anonymous message here"
                           {...field}
                         />
@@ -108,7 +121,13 @@ const Page = () => {
                   variant="ghost"
                   className="text-white w-auto ml-5 self-baseline md:w-auto border-1 hover:bg-white/20 p-5"
                 >
-                  Send it
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    </>
+                  ) : (
+                    "Send it"
+                  )}
                 </Button>
               </form>
             </Form>

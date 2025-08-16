@@ -45,6 +45,11 @@ export default function Navbar() {
                     Dashboard
                   </Button>
                 </Link>
+                 <Link href="https://github.com/Ritesh2080">
+                  <Button variant="ghost" className="text-white hover:bg-white/20">
+                    Github
+                  </Button>
+                </Link>
                 <Button
                   onClick={() => signOut()}
                   variant="ghost"
@@ -86,14 +91,22 @@ export default function Navbar() {
                     <DropdownMenuItem asChild>
                       <Link href="/dashboard">Dashboard</Link>
                     </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                    <Link href="https://github.com/Ritesh2080">Github</Link>
+                  </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => signOut()}>
                       Logout
                     </DropdownMenuItem>
                   </>
                 ) : (
+                  <>
+                  <DropdownMenuItem asChild>
+                    <Link href="https://github.com/Ritesh2080">Github</Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/sign-in">Login</Link>
                   </DropdownMenuItem>
+                  </>
                 )}
               </DropdownMenuContent>
             </DropdownMenu>
