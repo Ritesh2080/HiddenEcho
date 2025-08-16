@@ -6,7 +6,12 @@ import { useSession, signOut } from "next-auth/react";
 import { User } from "next-auth";
 import Image from "next/image";
 import { Button } from "./ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Menu } from "lucide-react";
 
 export default function Navbar() {
@@ -41,12 +46,18 @@ export default function Navbar() {
                   Welcome, {user.username || user.email}
                 </span>
                 <Link href="/dashboard">
-                  <Button variant="ghost" className="text-white hover:bg-white/20">
+                  <Button
+                    variant="ghost"
+                    className="text-white hover:bg-white/20"
+                  >
                     Dashboard
                   </Button>
                 </Link>
-                 <Link href="https://github.com/Ritesh2080">
-                  <Button variant="ghost" className="text-white hover:bg-white/20">
+                <Link href="https://github.com/Ritesh2080">
+                  <Button
+                    variant="ghost"
+                    className="text-white hover:bg-white/20"
+                  >
                     Github
                   </Button>
                 </Link>
@@ -59,11 +70,24 @@ export default function Navbar() {
                 </Button>
               </>
             ) : (
-              <Link href="/sign-in">
-                <Button variant="ghost" className="text-white hover:bg-white/20">
-                  Login
-                </Button>
-              </Link>
+              <>
+                <Link href="https://github.com/Ritesh2080">
+                  <Button
+                    variant="ghost"
+                    className="text-white hover:bg-white/20"
+                  >
+                    Github
+                  </Button>
+                </Link>
+                <Link href="/sign-in">
+                  <Button
+                    variant="ghost"
+                    className="text-white hover:bg-white/20"
+                  >
+                    Login
+                  </Button>
+                </Link>
+              </>
             )}
           </div>
 
@@ -85,27 +109,26 @@ export default function Navbar() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-40 bg-[#111] text-white border-white/10">
-              
                 {session ? (
                   <>
                     <DropdownMenuItem asChild>
                       <Link href="/dashboard">Dashboard</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                    <Link href="https://github.com/Ritesh2080">Github</Link>
-                  </DropdownMenuItem>
+                      <Link href="https://github.com/Ritesh2080">Github</Link>
+                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => signOut()}>
                       Logout
                     </DropdownMenuItem>
                   </>
                 ) : (
                   <>
-                  <DropdownMenuItem asChild>
-                    <Link href="https://github.com/Ritesh2080">Github</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/sign-in">Login</Link>
-                  </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="https://github.com/Ritesh2080">Github</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/sign-in">Login</Link>
+                    </DropdownMenuItem>
                   </>
                 )}
               </DropdownMenuContent>
