@@ -120,6 +120,7 @@ const Page = () => {
                   type="submit"
                   variant="ghost"
                   className="text-white w-auto ml-5 self-baseline md:w-auto border-1 hover:bg-white/20 p-5"
+                  disabled={isSubmitting}
                 >
                   {isSubmitting ? (
                     <>

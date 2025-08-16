@@ -164,6 +164,7 @@ const Page = () => {
 
                 <Button
                   type="submit"
+                  disabled={isSubmitting}
                   variant="ghost"
                   className="text-white border-1 hover:bg-white/20"
                 >
@@ -237,6 +238,7 @@ const Page = () => {
                             <Button
                               type="submit"
                               variant="ghost"
+                              disabled={isSubmitting}
                               className="text-white border-1 hover:bg-white/20"
                             >
                               {isSubmitting ? (

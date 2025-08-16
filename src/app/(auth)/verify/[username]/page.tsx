@@ -102,6 +102,7 @@ const VerifyAccount = () => {
                 type="submit"
                 className="text-white border-1 hover:bg-white/20"
                 variant="ghost"
+                disabled={isSubmitting}
               >
                 {isSubmitting ? (
                   <>
