@@ -21,7 +21,7 @@ deployment readiness.
     Bits](https://reactbits.dev/) & Tailwind CSS
 -   📱 **Responsive design** (mobile-first, works seamlessly across
     devices)
--   🌙 **Dark/Light mode** support with `next-themes`
+
 -   🎥 **Smooth animations** using GSAP and Motion
 -   📧 **Email integration** with Resend & React Email
 -   📂 **MongoDB integration** with Mongoose for data storage
@@ -136,5 +136,5 @@ Feel free to fork the repository and submit a pull request.
 
 Developed by **Ritesh Verma** ✨\
  [Linked In](https://www.linkedin.com/in/ritesh-verma-b30855325/)\
- [Email](riteshvermamt@gmail.com)
+ Email - riteshvermamt@gmail.com
 
